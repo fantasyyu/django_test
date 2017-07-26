@@ -19,7 +19,7 @@ class UserProfile(AbstractUser):
         verbose_name = "用户信息"
         verbose_name_plural = verbose_name
 
-    def __unicode__(self):
+    def __str__(self):
         return self.username
 
 class EmailVerifyRecord(models.Model):
@@ -32,7 +32,7 @@ class EmailVerifyRecord(models.Model):
         verbose_name = u"邮箱验证码"
         verbose_name_plural = verbose_name
 
-    def __unicode__(self):
+    def __str__(self):
         return '{0}({1})'.format(self.code, self.email)
 
 class Banner(models.Model):
