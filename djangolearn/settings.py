@@ -1,3 +1,4 @@
+# _*_ coding:utf-8 _*_
 """
 Django settings for djangolearn project.
 
@@ -48,7 +49,8 @@ INSTALLED_APPS = [
     'organization',
     'xadmin',
     'crispy_forms',
-    'captcha'
+    'captcha',
+    'pure_pagination',
 ]
 
 AUTH_USER_MODEL = "users.UserProfile"
@@ -78,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.media', #注册MEDIA_URL到html
             ],
         },
     },
@@ -147,3 +150,14 @@ EMAIL_HOST_USER = "jdyujian@126.com"
 EMAIL_HOST_PASSWORD = "897823yujian"
 EMAIL_USE_TLS = False
 EMAIL_FROM = "jdyujian@126.com"
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 10,
+    'MARGIN_PAGES_DISPLAYED': 2,
+
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+}
