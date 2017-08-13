@@ -156,7 +156,7 @@ class AddFavView(View):
         if exist_records:
             #如果记录已经存在，则表示用户取消收藏
             exist_records.delete()
-            return HttpResponse('{"status": "fail", "msg": "收藏"}',  content_type='application/json')
+            return HttpResponse('{"status": "success", "msg": "收藏"}',  content_type='application/json')
         else:
             user_fav = UserFavoriate()
             if int(fav_id) > 0 and int(fav_type) > 0:

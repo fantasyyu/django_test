@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.db import models
 
-from organization.models import CourseOrg
+from organization.models import CourseOrg, Teacher
 
 # Create your models here.
 
@@ -21,6 +21,9 @@ class Course(models.Model):
     click_nums = models.IntegerField(default=0, verbose_name=u"点击数")
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
     tag = models.CharField(default="", verbose_name=u"课程标签", max_length=10)
+    teacher = models.ForeignKey(Teacher, verbose_name=u"讲师", null=True, blank=True)
+    need_know = models.CharField(max_length=500, verbose_name=u"课程须知", default="")
+    teacher_tell = models.CharField(max_length=500, verbose_name=u"老师告诉你", default="")
 
     class Meta:
         verbose_name = u"课程"
@@ -31,6 +34,10 @@ class Course(models.Model):
 
     def get_learn_users(self):
         return self.usercourse_set.all()[:5]
+
+    #获取课程所有章节
+    def get_course_lessons(self):
+        return self.lesson_set.all()
 
     def __str__(self):
         return self.name
@@ -48,10 +55,15 @@ class Lesson(models.Model):
     def __str__(self):
         return self.name
 
+    #获取章节视频
+    def get_lesson_videos(self):
+        return self.video_set.all()
+
 
 class Video(models.Model):
     lesson = models.ForeignKey(Lesson, verbose_name=u"章节")
     name = models.CharField(max_length=100, verbose_name=u"视频名")
+    url = models.CharField(max_length=200, verbose_name=u"访问地址", default="")
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
 
     class Meta:
