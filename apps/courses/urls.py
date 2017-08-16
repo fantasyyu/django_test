@@ -1,7 +1,7 @@
 # _*_ coding:utf-8 _*_
 
 from django.conf.urls import url, include
-from .views import CourseListView, CourseDetailView, CourseInfoView, CourseComments, AddCommentsView, VideoPlayView
+from .views import CourseListView, CourseDetailView, CourseInfoView, CourseCommentView, AddCommentsView, VideoPlayView
 
 urlpatterns = [
     #courses url
@@ -11,7 +11,7 @@ urlpatterns = [
     #
     url(r'^info/(?P<course_id>\d+)/$', CourseInfoView.as_view(), name="course_info"),
     #课程评论
-    url(r'^comment/(?P<course_id>\d+)/$', CourseComments.as_view(), name="course_comment"),
+    url(r'^comment/(?P<course_id>\d+)/$', CourseCommentView.as_view(), name="course_comment"),
 
     #添加评论
     url(r'^add_comment/$', AddCommentsView.as_view(), name="add_comment"),
