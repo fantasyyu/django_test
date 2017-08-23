@@ -25,7 +25,7 @@ class UserProfile(AbstractUser):
     def get_unread_nums(self):
         #获取用户未读消息数量
         from operation.models import UserMessage #防止循环调用
-        return UserMessage.objects.filter(user=self.id).count()
+        return UserMessage.objects.filter(user=self.id, has_read=False).count()
 
 
 class EmailVerifyRecord(models.Model):

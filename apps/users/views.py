@@ -1,11 +1,11 @@
 # _*_ coding:utf-8 _*_
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.views.generic.base import View
 from django.contrib.auth.hashers import make_password
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
@@ -73,6 +73,13 @@ class RegisterView(View):
             return render(request, "login.html")
         else:
             return render(request, "register.html", {"register_form" : register_form})
+
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        from django.core.urlresolvers import reverse
+        return HttpResponseRedirect(reverse("index"))
 
 
 class LoginView(View):
@@ -285,6 +292,11 @@ class MyFavCourseView(LoginRequiredMixin, View):
 class MyMessageView(LoginRequiredMixin, View):
     def get(self, request):
         all_messages = UserMessage.objects.all()
+        # 用户进入个人消息后清空消息列表
+        all_unread_messages = UserMessage.objects.filter(user=request.user.id, has_read=False)
+        for unread_message in all_unread_messages:
+            unread_message.has_read = True
+            unread_message.save()
 
         try:
             page = request.GET.get('page', 1)
