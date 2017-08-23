@@ -20,13 +20,15 @@ from django.views.generic import TemplateView
 from django.views.static import serve
 import xadmin
 
-from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView, ModifyPwdView, LogoutView
+from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView, \
+    ModifyPwdView, LogoutView, IndexView
 from organization.views import OrgView
-from .settings import MEDIA_ROOT
+from .settings import MEDIA_ROOT, STATIC_ROOT
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
-    url('^$', TemplateView.as_view(template_name="index.html"), name="index"),
+    #url('^$', TemplateView.as_view(template_name="index.html"), name="index"),
+    url('^$', IndexView.as_view(), name="index"),
     #url('^login/$', user_login, name="login"),
     url('^login/$', LoginView.as_view(), name="login"),
     url('^logout/$', LogoutView.as_view(), name="logout"),
@@ -48,4 +50,11 @@ urlpatterns = [
 
     #用户个人中心
     url(r'^users/', include('users.urls', namespace="users")),
+
+    # 11-4 当非debug环境下需要使用static路径, STATICFILES_DIRS 和 STATIC_URL在非debug环境下失效
+    url(r'^static/(?P<path>.*)/$', serve, {"document_root": STATIC_ROOT}),
 ]
+
+# 全局404页面配置
+handler404 = 'users.view.page_not_found'
+handler500 = 'users.view.page_error'
