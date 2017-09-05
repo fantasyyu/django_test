@@ -52,7 +52,7 @@ urlpatterns = [
     url(r'^users/', include('users.urls', namespace="users")),
 
     # 11-4 当非debug环境下需要使用static路径, STATICFILES_DIRS 和 STATIC_URL在非debug环境下失效
-    url(r'^static/(?P<path>.*)/$', serve, {"document_root": STATIC_ROOT}),
+    #url(r'^static/(?P<path>.*)/$', serve, {"document_root": STATIC_ROOT}),
 ]
 
 # 全局404页面配置

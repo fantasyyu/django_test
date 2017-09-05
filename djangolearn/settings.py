@@ -154,7 +154,7 @@ EMAIL_FROM = "jdyujian@126.com"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 10,
