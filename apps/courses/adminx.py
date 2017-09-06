@@ -3,6 +3,7 @@
 import xadmin
 
 from .models import Course, Lesson, Video, CourseResource, BannerCourse
+from organization.models import CourseOrg
 
 
 class LessonInline(object):
@@ -15,18 +16,29 @@ class CourseResourceInline(object):
     extra = 0
 
 class CourseAdmin(object):
-    list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students', 'fav_nums']
+    list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students', 'fav_nums', 'get_zj_nums', 'go_to']
     search_fields = ['name', 'desc', 'detail', 'degree', 'students', 'fav_nums']
     list_filter = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students', 'fav_nums']
     ordering = ['-click_nums']
     readonly_fields = ['fav_nums', 'students']
     exclude = ['click_nums']
+    list_editable = ['degree', 'desc']
     inlines = [LessonInline, CourseResourceInline]
+    refresh_times = [3, 5]
 
     def queryset(self):
         qs = super(CourseAdmin, self).queryset()
         qs.filter(is_banner=False)
         return qs
+
+    def save_models(self):
+        #保存课程时统计课程机构的课程数
+        obj = self.new_obj
+        obj.save()
+        if obj.course_org is not None:
+            course_org = obj.course_org
+            course_org.course_nums = Course.objects.filter(course_org=course_org).count()
+            course_org.save()
 
 
 class BannerCourseAdmin(object):
